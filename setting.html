@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>設定ページ</title>
+    <title>設定ページ</title> <!-- 更新かけるようコメ -->
     <link rel="stylesheet" href="test.css">
     <style>
         .setting-container {
@@ -73,7 +73,7 @@
             <input type="text" id="newCause" placeholder="頭痛のもと">
             <button class="add-btn" onclick="addCause()">追加</button>
         </div>
-        <button class="add-btn" onclick="location.href='test.html'">カレンダーに戻る</button>
+        <button class="add-btn" onclick="location.href='index.html'">カレンダーに戻る</button>
     </div>
     <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
@@ -91,7 +91,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 薬リストの表示・追加・削除
+        // 薬リストの表示・追加・削除をする
         async function loadMedicines() {
             const snap = await db.collection('settings').doc('medicines').get();
             const medicines = snap.exists ? snap.data().list : [];
@@ -159,7 +159,7 @@
 
         // 初期表示
         loadMedicines();
-        loadCauses();
+        loadCauses(); 
     </script>
 </body>
 </html>

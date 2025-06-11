@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>メモ編集</title>
+    <title>メモ編集ページ</title> <!-- 更新かけるようコメ -->
     <link rel="stylesheet" href="test.css">
     <style>
         .memo-container {
@@ -58,7 +58,7 @@
         <button class="save-btn" onclick="location.href='memo.html'" style="margin-left:8px;">一覧へ戻る</button>
     </div>
     <script>
-        // 編集時、URLからタイトル取得
+        // 編集時に、URLからタイトル取得
         const params = new URLSearchParams(window.location.search);
         const title = params.get('title');
         if (title) {
@@ -75,7 +75,7 @@
                 return;
             }
             localStorage.setItem('memo_' + titleVal, list);
-            alert('保存しました');
+            alert('保存しました'); 
         }
     </script>
 </body>

@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>編集ページ</title>   
+    <title>編集ページ</title>   <!-- 更新かけるようコメ -->
     <link rel="stylesheet" href="test.css">
     <style>
         .memory-bar {
@@ -77,7 +77,7 @@
         <textarea id="memo" name="memo" rows="5" cols="40"></textarea><br><br>
         <button type="submit">保存</button>
     </form>
-    <p><a href="test.html">← カレンダーに戻る</a></p>
+    <p><a href="index.html">← カレンダーに戻る</a></p>
 
     <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
@@ -104,7 +104,7 @@
     const causeSnap = await db.collection('settings').doc('causes').get();
     const causes = causeSnap.exists ? causeSnap.data().list : [];
 
-    // 服薬欄生成
+    // 服薬欄の生成
     const medsDiv = document.getElementById('medications');
     medsDiv.innerHTML = '';
     // 最低1つは表示
@@ -222,11 +222,11 @@
     })
       .then(() => {
         alert('データを保存しました！');
-        window.location.href = 'test.html';
+        window.location.href = 'index.html';
       })
       .catch((error) => {
         console.error('Error adding document: ', error);
-        alert('データの保存に失敗しました。');
+        alert('データの保存に失敗しました。'); 
       });
   });
 </script>
