@@ -152,58 +152,58 @@ td {
 /* --- スマートフォン用レスポンシブ調整 --- */
 @media (max-width: 600px) {
     body {
-        font-size: 20px; /* 全体の文字を大きく */
-        padding: 12px;
+        font-size: 16px; /* 標準的なスマホの本文サイズ */
+        padding: 8px;
     }
     h1 {
-        font-size: 1.7em; /* タイトル大きめ */
-        padding: 0.6em 0.4em 0.3em 0.4em;
+        font-size: 1.2em; /* タイトルやや大きめ */
+        padding: 0.5em 0.3em 0.2em 0.3em;
     }
     .calendar-header {
-        font-size: 1.2em;
-        padding: 10px 0;
-        border-radius: 10px;
-        margin-bottom: 12px;
+        font-size: 1em;
+        padding: 6px 0;
+        border-radius: 8px;
+        margin-bottom: 8px;
     }
     table {
         width: 100%;
-        font-size: 1.8em; /* カレンダーの数字も大きく */
-        margin: 0 auto 12px auto;
-        box-shadow: 0 2px 8px #C0C0C0;
+        font-size: 1.1em; /* カレンダーの数字もやや大きめ */
+        margin: 0 auto 8px auto;
+        box-shadow: 0 1px 4px #C0C0C0;
     }
     th, td {
-        width: 56px;   /* さらに大きく */
-        height: 56px;
+        width: 32px;   /* 標準的なタップサイズ */
+        height: 32px;
         font-size: 1em;
-        padding: 6px;
+        padding: 2px;
     }
     .plus-btn,
     .memo-btn {
-        width: 64px;
-        height: 64px;
-        font-size: 2.2em;
-        right: 20px;
-        left: 20px;
-        bottom: 20px;
+        width: 44px;
+        height: 44px;
+        font-size: 1.3em;
+        right: 12px;
+        left: 12px;
+        bottom: 12px;
     }
     .plus-btn {
-        right: 20px;
+        right: 12px;
     }
     .memo-btn {
-        left: 20px;
+        left: 12px;
     }
     #recordDisplay {
-        max-width: 99vw;
-        padding: 16px;
-        font-size: 1.1em;
+        max-width: 98vw;
+        padding: 10px;
+        font-size: 1em;
     }
     .calendar-link {
-        font-size: 1.1em;
-        padding: 6px;
+        font-size: 1em;
+        padding: 4px;
     }
     .arrow-btn {
-        font-size: 2em;
-        padding: 0 16px;
+        font-size: 1.3em;
+        padding: 0 8px;
     }
 }
 
