@@ -42,14 +42,16 @@ table {
     border-collapse: collapse;
     margin: 0 auto 16px auto;
     box-shadow: 0 2px 8px #C0C0C0;
+    font-size: 1.5em; /* 追加: 全体の文字サイズを1.5倍に */
 }
 
 th, td {
     border: 1px solid #C0C0C0;
-    width: 32px;
-    height: 32px;
+    width: 48px;   /* 32px → 48px (1.5倍) */
+    height: 48px;  /* 32px → 48px (1.5倍) */
     text-align: center;
     color: #524B4B;
+    font-size: 1em; /* 維持: tableのfont-sizeに依存 */
 }
 
 th {
@@ -165,14 +167,14 @@ td {
     }
     table {
         width: 100%;
-        font-size: 0.95em;
+        font-size: 1.425em; /* 0.95em × 1.5 */
         margin: 0 auto 8px auto;
         box-shadow: 0 1px 4px #C0C0C0;
     }
     th, td {
-        width: 28px;
-        height: 28px;
-        font-size: 0.95em;
+        width: 42px;   /* 28px → 42px */
+        height: 42px;  /* 28px → 42px */
+        font-size: 1em;
         padding: 2px;
     }
     .plus-btn,
