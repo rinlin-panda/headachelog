@@ -59,12 +59,29 @@
                 if (key.startsWith('memo_')) {
                     found = true;
                     const title = key.replace('memo_', '');
-                    memoListDiv.innerHTML += `<a class="memo-title-link" href="memo_edit.html?title=${encodeURIComponent(title)}">${title}</a>`;
+                    const encodedTitle = encodeURIComponent(title);
+                    // 1行ごとにdivで囲み、右側にゴミ箱ボタン
+                    memoListDiv.innerHTML += `
+                      <div style="display:flex;align-items:center;justify-content:space-between;">
+                        <a class="memo-title-link" href="memo_edit.html?title=${encodedTitle}" style="flex:1;">${title}</a>
+                        <button class="delete-memo-btn" data-title="${title}" title="削除" style="background:none;border:none;cursor:pointer;font-size:1.2em;color:#b71c1c;">🗑️</button>
+                      </div>
+                    `;
                 }
             }
             if (!found) {
                 memoListDiv.innerHTML = '<p>メモがありません。</p>';
             }
+
+            // ゴミ箱ボタンにイベントを付与
+            document.querySelectorAll('.delete-memo-btn').forEach(btn => {
+                btn.onclick = function() {
+                    if (confirm('このメモを削除しますか？')) {
+                        localStorage.removeItem('memo_' + btn.dataset.title);
+                        loadMemoTitles();
+                    }
+                };
+            });
         }
         loadMemoTitles(); 
     </script>

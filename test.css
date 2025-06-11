@@ -152,50 +152,58 @@ td {
 /* --- スマートフォン用レスポンシブ調整 --- */
 @media (max-width: 600px) {
     body {
-        font-size: 16px;
-        padding: 8px;
+        font-size: 20px; /* 全体の文字を大きく */
+        padding: 12px;
     }
     h1 {
-        font-size: 1.3em;
-        padding: 0.4em 0.3em 0.2em 0.3em;
+        font-size: 1.7em; /* タイトル大きめ */
+        padding: 0.6em 0.4em 0.3em 0.4em;
     }
     .calendar-header {
-        font-size: 1em;
-        padding: 6px 0;
-        border-radius: 6px;
-        margin-bottom: 8px;
+        font-size: 1.2em;
+        padding: 10px 0;
+        border-radius: 10px;
+        margin-bottom: 12px;
     }
     table {
         width: 100%;
-        font-size: 1.425em; /* 0.95em × 1.5 */
-        margin: 0 auto 8px auto;
-        box-shadow: 0 1px 4px #C0C0C0;
+        font-size: 1.8em; /* カレンダーの数字も大きく */
+        margin: 0 auto 12px auto;
+        box-shadow: 0 2px 8px #C0C0C0;
     }
     th, td {
-        width: 42px;   /* 28px → 42px */
-        height: 42px;  /* 28px → 42px */
+        width: 56px;   /* さらに大きく */
+        height: 56px;
         font-size: 1em;
-        padding: 2px;
+        padding: 6px;
     }
     .plus-btn,
     .memo-btn {
-        width: 44px;
-        height: 44px;
-        font-size: 1.5em;
-        right: 16px;
-        left: 16px;
-        bottom: 16px;
+        width: 64px;
+        height: 64px;
+        font-size: 2.2em;
+        right: 20px;
+        left: 20px;
+        bottom: 20px;
     }
     .plus-btn {
-        right: 16px;
+        right: 20px;
     }
     .memo-btn {
-        left: 16px;
+        left: 20px;
     }
     #recordDisplay {
-        max-width: 98vw;
-        padding: 10px;
-        font-size: 0.95em;
+        max-width: 99vw;
+        padding: 16px;
+        font-size: 1.1em;
+    }
+    .calendar-link {
+        font-size: 1.1em;
+        padding: 6px;
+    }
+    .arrow-btn {
+        font-size: 2em;
+        padding: 0 16px;
     }
 }
 
