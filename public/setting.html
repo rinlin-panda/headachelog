@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>設定ページ</title>
+    <link rel="stylesheet" href="test.css">
+    <style>
+        .setting-container {
+            max-width: 500px;
+            margin: 32px auto;
+            background: #fff;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 8px #C0C0C0;
+        }
+        .setting-section {
+            margin-bottom: 32px;
+        }
+        .setting-section h2 {
+            margin-bottom: 12px;
+            color: #524B4B;
+        }
+        .setting-list {
+            margin-bottom: 12px;
+        }
+        .setting-list li {
+            margin-bottom: 4px;
+            color: #524B4B;
+        }
+        .remove-btn {
+            margin-left: 8px;
+            color: #fff;
+            background: #997F7A;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 8px;
+            cursor: pointer;
+        }
+        .remove-btn:hover {
+            background: #524B4B;
+        }
+        .add-btn {
+            background: #997F7A;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 16px;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+        .add-btn:hover {
+            background: #524B4B;
+        }
+        input[type="text"] {
+            padding: 4px;
+            border-radius: 4px;
+            border: 1px solid #C0C0C0;
+        }
+    </style>
+</head>
+<body>
+    <div class="setting-container">
+        <h1>設定</h1>
+        <div class="setting-section">
+            <h2>薬リスト</h2>
+            <ul id="medicineList" class="setting-list"></ul>
+            <input type="text" id="newMedicine" placeholder="薬の名前">
+            <button class="add-btn" onclick="addMedicine()">追加</button>
+        </div>
+        <div class="setting-section">
+            <h2>頭痛のもとリスト</h2>
+            <ul id="causeList" class="setting-list"></ul>
+            <input type="text" id="newCause" placeholder="頭痛のもと">
+            <button class="add-btn" onclick="addCause()">追加</button>
+        </div>
+        <button class="add-btn" onclick="location.href='test.html'">カレンダーに戻る</button>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Firebaseの設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyBHlw82RbUfenDnDyM5WOnrEJqHHYwqQS4",
+            authDomain: "headachereporttest.firebaseapp.com",
+            projectId: "headachereporttest",
+            storageBucket: "headachereporttest.appspot.com",
+            messagingSenderId: "1011198068393",
+            appId: "1:1011198068393:web:fa25a80f678c78f1764bb8",
+            measurementId: "YOUR_MEASUREMENT_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // 薬リストの表示・追加・削除
+        async function loadMedicines() {
+            const snap = await db.collection('settings').doc('medicines').get();
+            const medicines = snap.exists ? snap.data().list : [];
+            const list = document.getElementById('medicineList');
+            list.innerHTML = '';
+            medicines.forEach((med, idx) => {
+                const li = document.createElement('li');
+                li.textContent = med;
+                const btn = document.createElement('button');
+                btn.textContent = '削除';
+                btn.className = 'remove-btn';
+                btn.onclick = async () => {
+                    medicines.splice(idx, 1);
+                    await db.collection('settings').doc('medicines').set({ list: medicines });
+                    loadMedicines();
+                };
+                li.appendChild(btn);
+                list.appendChild(li);
+            });
+        }
+        async function addMedicine() {
+            const input = document.getElementById('newMedicine');
+            const name = input.value.trim();
+            if (!name) return;
+            const snap = await db.collection('settings').doc('medicines').get();
+            const medicines = snap.exists ? snap.data().list : [];
+            medicines.push(name);
+            await db.collection('settings').doc('medicines').set({ list: medicines });
+            input.value = '';
+            loadMedicines();
+        }
+
+        // 頭痛のもとリストの表示・追加・削除
+        async function loadCauses() {
+            const snap = await db.collection('settings').doc('causes').get();
+            const causes = snap.exists ? snap.data().list : [];
+            const list = document.getElementById('causeList');
+            list.innerHTML = '';
+            causes.forEach((cause, idx) => {
+                const li = document.createElement('li');
+                li.textContent = cause;
+                const btn = document.createElement('button');
+                btn.textContent = '削除';
+                btn.className = 'remove-btn';
+                btn.onclick = async () => {
+                    causes.splice(idx, 1);
+                    await db.collection('settings').doc('causes').set({ list: causes });
+                    loadCauses();
+                };
+                li.appendChild(btn);
+                list.appendChild(li);
+            });
+        }
+        async function addCause() {
+            const input = document.getElementById('newCause');
+            const name = input.value.trim();
+            if (!name) return;
+            const snap = await db.collection('settings').doc('causes').get();
+            const causes = snap.exists ? snap.data().list : [];
+            causes.push(name);
+            await db.collection('settings').doc('causes').set({ list: causes });
+            input.value = '';
+            loadCauses();
+        }
+
+        // 初期表示
+        loadMedicines();
+        loadCauses();
+    </script>
+</body>
+</html>

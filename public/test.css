@@ -1,0 +1,200 @@
+body {
+    background-color: #524B4B;
+    color: #F7CCCB;
+    font-family: 'Yu Gothic', 'Meiryo', sans-serif;
+}
+
+h1 {
+    color: #F7CCCB;
+    background-color: #524B4B;
+    border-bottom: 2px solid #997F7A;
+    padding: 0.5em 0.5em 0.2em 0.5em;
+    margin-bottom: 1em;
+}
+
+.calendar-header {
+    background-color: #997F7A;
+    color: #F7CCCB;
+    padding: 8px 0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.calendar-title {
+    color: #F7CCCB;
+}
+
+.arrow-btn {
+    color: #ffffff;
+    background: #524B4B;
+    border: 1px solid #997F7A;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.arrow-btn:hover {
+    background: #997F7A;
+    color: #524B4B;
+}
+
+table {
+    background: #fff;
+    border-collapse: collapse;
+    margin: 0 auto 16px auto;
+    box-shadow: 0 2px 8px #C0C0C0;
+}
+
+th, td {
+    border: 1px solid #C0C0C0;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    color: #524B4B;
+}
+
+th {
+    background: #997F7A;
+    color: #fff;
+}
+
+td {
+    background: #F7CCCB;
+    color: #524B4B;
+}
+
+.calendar-link {
+    color: #524B4B;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.calendar-link:hover {
+    background: #997F7A;
+    color: #fff;
+}
+
+.plus-btn {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #997F7A;
+    color: #fff;
+    font-size: 2.5em;
+    border: none;
+    box-shadow: 0 2px 6px #C0C0C0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    z-index: 100;
+    transition: background 0.2s;
+}
+
+.plus-btn:hover {
+    background: #F7CCCB;
+    color: #524B4B;
+    border: 1px solid #997F7A;
+}
+
+.memo-btn {
+    position: fixed;
+    left: 30px;
+    bottom: 30px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #787272;
+    color: #fff;
+    font-size: 2em;
+    border: none;
+    box-shadow: 0 2px 6px #C0C0C0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    z-index: 100;
+    transition: background 0.2s;
+}
+
+.memo-btn:hover {
+    background: #997F7A;
+}
+
+#recordDisplay {
+    background: #fff;
+    border: 1px solid #C0C0C0;
+    color: #787272;
+    margin: 16px auto;
+    padding: 16px;
+    border-radius: 8px;
+    max-width: 400px;
+    box-shadow: 0 2px 8px #C0C0C0;
+}
+
+.has-record {
+    background: #997F7A !important;
+    color: #fff !important;
+    border-radius: 50%;
+    position: relative;
+}
+
+/* --- スマートフォン用レスポンシブ調整 --- */
+@media (max-width: 600px) {
+    body {
+        font-size: 16px;
+        padding: 8px;
+    }
+    h1 {
+        font-size: 1.3em;
+        padding: 0.4em 0.3em 0.2em 0.3em;
+    }
+    .calendar-header {
+        font-size: 1em;
+        padding: 6px 0;
+        border-radius: 6px;
+        margin-bottom: 8px;
+    }
+    table {
+        width: 100%;
+        font-size: 0.95em;
+        margin: 0 auto 8px auto;
+        box-shadow: 0 1px 4px #C0C0C0;
+    }
+    th, td {
+        width: 28px;
+        height: 28px;
+        font-size: 0.95em;
+        padding: 2px;
+    }
+    .plus-btn,
+    .memo-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 1.5em;
+        right: 16px;
+        left: 16px;
+        bottom: 16px;
+    }
+    .plus-btn {
+        right: 16px;
+    }
+    .memo-btn {
+        left: 16px;
+    }
+    #recordDisplay {
+        max-width: 98vw;
+        padding: 10px;
+        font-size: 0.95em;
+    }
+}
+
+

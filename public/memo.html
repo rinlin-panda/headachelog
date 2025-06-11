@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>メモ一覧</title>
+    <link rel="stylesheet" href="test.css">
+    <style>
+        .memo-list-container {
+            max-width: 500px;
+            margin: 32px auto;
+            background: #fff;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 8px #C0C0C0;
+        }
+        .memo-title-link {
+            display: block;
+            padding: 12px;
+            border-bottom: 1px solid #C0C0C0;
+            color: #524B4B;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: background 0.2s;
+        }
+        .memo-title-link:hover {
+            background: #F7CCCB;
+        }
+        .add-btn {
+            margin-top: 16px;
+            background: #997F7A;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 24px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .add-btn:hover {
+            background: #524B4B;
+        }
+    </style>
+</head>
+<body>
+    <div class="memo-list-container">
+        <h2>メモ一覧</h2>
+        <div id="memoList"></div>
+        <button class="add-btn" onclick="location.href='memo_edit.html'">＋新規作成</button>
+        <button class="add-btn" onclick="location.href='test.html'" style="margin-left:8px;">カレンダーに戻る</button>
+    </div>
+    <script>
+        // ローカルストレージからタイトル一覧を取得
+        function loadMemoTitles() {
+            const memoListDiv = document.getElementById('memoList');
+            memoListDiv.innerHTML = '';
+            let found = false;
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('memo_')) {
+                    found = true;
+                    const title = key.replace('memo_', '');
+                    memoListDiv.innerHTML += `<a class="memo-title-link" href="memo_edit.html?title=${encodeURIComponent(title)}">${title}</a>`;
+                }
+            }
+            if (!found) {
+                memoListDiv.innerHTML = '<p>メモがありません。</p>';
+            }
+        }
+        loadMemoTitles();
+    </script>
+</body>
+</html>

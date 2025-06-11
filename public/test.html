@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>サンプルページ</title>   
+    <link rel="stylesheet" href="test.css">
+    <style>
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid #999; width: 32px; height: 32px; text-align: center; }
+        select { font-size: 1em; }
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .arrow-btn {
+            background: none;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            padding: 0 20px;
+            user-select: none;
+        }
+        .calendar-title {
+            font-size: 1.2em;
+            min-width: 120px;
+            text-align: center;
+        }
+        /* 右下の＋ボタン */
+        .plus-btn {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #ffffff;
+            color: #000000;
+            font-size: 2.5em;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            z-index: 100;
+            transition: background 0.2s;
+        }
+        .plus-btn:hover {
+            background: #388E3C;
+        }
+
+        /* 左下のメモボタン */
+        .memo-btn {
+            position: fixed;
+            left: 30px;
+            bottom: 30px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #ffffff;
+            color: #000000;
+            font-size: 2.5em;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            z-index: 100;
+            transition: background 0.2s;
+        }
+        .memo-btn:hover {
+            background: #1976D2;
+        }
+
+        /* 歯車ボタン（右上固定） */
+        .setting-btn {
+            position: fixed;
+            right: 100px;
+            top: 30px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #787272;
+            color: #fff;
+            font-size: 2.5em;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            z-index: 100;
+            transition: background 0.2s;
+        }
+        .setting-btn:hover {
+            background: #787272;
+        }
+    </style>
+</head>
+<body>
+    <h1>偏頭痛記録</h1>
+
+    <div class="calendar-header">
+        <button class="arrow-btn" id="prevMonthBtn">&#8592;</button>
+        <span class="calendar-title" id="calendarTitle"></span>
+        <button class="arrow-btn" id="nextMonthBtn">&#8594;</button>
+    </div>
+    <div id="calendar"></div>
+
+    <!-- 右下の＋ボタン -->
+    <a href="write.html" class="plus-btn" title="新規作成">＋</a>
+
+    <!-- 左下のメモボタン -->
+    <a href="memo.html" class="memo-btn" title="メモページ">📝</a>
+
+    <!-- 歯車ボタン（右上固定） -->
+    <a href="setting.html" class="setting-btn" title="設定">
+        <span style="font-size:2em;">&#9881;</span>
+    </a>
+  
+    <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        // ここに全ての初期化・イベント登録・カレンダー描画処理を書く
+        let currentYear, currentMonth;
+        const calendarDiv = document.getElementById('calendar');
+        const calendarTitle = document.getElementById('calendarTitle');
+        const prevMonthBtn = document.getElementById('prevMonthBtn');
+        const nextMonthBtn = document.getElementById('nextMonthBtn');
+
+        function updateCalendarTitle(year, month) {
+            calendarTitle.textContent = `${year}年 ${month}月`;
+        }
+
+        async function createCalendar(year, month) {
+            updateCalendarTitle(year, month);
+            const firstDay = new Date(year, month - 1, 1).getDay();
+            const lastDate = new Date(year, month, 0).getDate();
+
+            // ① Firestoreから当月のデータ一覧を取得
+            const start = `${year}-${String(month).padStart(2, '0')}-01`;
+            const end = `${year}-${String(month).padStart(2, '0')}-31`;
+            const snapshot = await db.collection('records')
+                .where(firebase.firestore.FieldPath.documentId(), '>=', start)
+                .where(firebase.firestore.FieldPath.documentId(), '<=', end)
+                .get();
+            const recordDates = snapshot.docs.map(doc => doc.id);
+
+            let html = '<table><thead><tr>';
+            const week = ['日','月','火','水','木','金','土'];
+            for(let d of week) html += `<th>${d}</th>`;
+            html += '</tr></thead><tbody><tr>';
+
+            for(let i = 0; i < firstDay; i++) html += '<td></td>';
+            for(let date = 1; date <= lastDate; date++) {
+                if((firstDay + date - 1) % 7 === 0 && date !== 1) html += '</tr><tr>';
+                const ymd = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+                // データがある日付にはクラスのみ追加（アイコンなし）
+                const hasRecord = recordDates.includes(ymd);
+                html += `<td>
+                    <a href="#" class="calendar-link${hasRecord ? ' has-record' : ''}" data-date="${ymd}">
+                        ${date}
+                    </a>
+                </td>`;
+            }
+            const remaining = (firstDay + lastDate) % 7;
+            if(remaining !== 0) for(let i = 0; i < 7 - remaining; i++) html += '<td></td>';
+            html += '</tr></tbody></table>';
+            calendarDiv.innerHTML = html;
+
+            // 日付クリックイベント（既存処理）
+            document.querySelectorAll('.calendar-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const date = this.getAttribute('data-date');
+                    window.location.href = `write.html?date=${date}`;
+                });
+            });
+        }
+
+        function showCalendar(year, month) {
+            currentYear = year;
+            currentMonth = month;
+            createCalendar(year, month);
+        }
+
+        prevMonthBtn.addEventListener('click', () => {
+            let year = currentYear;
+            let month = currentMonth - 1;
+            if(month < 1) {
+                month = 12;
+                year--;
+            }
+            showCalendar(year, month);
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            let year = currentYear;
+            let month = currentMonth + 1;
+            if(month > 12) {
+                month = 1;
+                year++;
+            }
+            showCalendar(year, month);
+        });
+
+        // 初期表示
+        const now = new Date();
+        showCalendar(now.getFullYear(), now.getMonth() + 1);
+
+        // カレンダーの日付クリックでFirestoreからデータ取得＆表示
+        calendarDiv.addEventListener('click', (e) => {
+          if (e.target.classList.contains('calendar-link')) {
+            e.preventDefault(); // デフォルトのリンク遷移を防止
+            const selectedDate = e.target.dataset.date;
+            // Firestoreからデータを取得
+            db.collection('records').doc(selectedDate).get()
+              .then((doc) => {
+                if (doc.exists) {
+                  const data = doc.data();
+                  displayRecord(data); // データを表示する関数
+                } else {
+                  alert('この日のデータはありません。');
+                }
+              })
+              .catch((error) => {
+                console.error('Error getting document: ', error);
+                alert('データの取得に失敗しました。');
+              });
+          }
+        });
+
+        // 取得したデータを表示する関数
+        function displayRecord(data) {
+          const display = document.getElementById('recordDisplay');
+          display.innerHTML = `
+            <div style="border:1px solid #888; background:#fff; padding:12px; margin:12px 0;">
+              <h3>記録データ</h3>
+              <ul>
+                <li>日付: ${data.date || ''}</li>
+                <li>メモ: ${data.memo || ''}</li>
+                <!-- 他の項目も同様に -->
+              </ul>
+            </div>
+          `;
+        }
+    });
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+<script>
+  // Firebaseの設定
+  const firebaseConfig = {
+    apiKey: "AIzaSyBHlw82RbUfenDnDyM5WOnrEJqHHYwqQS4",
+    authDomain: "headachereporttest.firebaseapp.com",
+    projectId: "headachereporttest",
+    storageBucket: "headachereporttest.appspot.com",
+    messagingSenderId: "1011198068393",
+    appId: "1:1011198068393:web:fa25a80f678c78f1764bb8",
+    measurementId: "YOUR_MEASUREMENT_ID"  // Google Analytics を有効にした場合
+  };
+
+  // Firebaseを初期化
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore(); // Firestoreインスタンスを取得
+</script>
+</body>
+</html>

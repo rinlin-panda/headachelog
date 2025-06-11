@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>メモ編集</title>
+    <link rel="stylesheet" href="test.css">
+    <style>
+        .memo-container {
+            background: #fff;
+            border-radius: 8px;
+            max-width: 500px;
+            margin: 32px auto;
+            padding: 24px;
+            box-shadow: 0 2px 8px #C0C0C0;
+        }
+        .memo-title, .memo-list {
+            width: 100%;
+            font-size: 1.2em;
+            margin-bottom: 16px;
+            border: none;
+            border-bottom: 1px solid #997F7A;
+            background: transparent;
+            color: #524B4B;
+            outline: none;
+            padding: 4px 0;
+        }
+        .memo-list {
+            min-height: 120px;
+            border: 1px solid #C0C0C0;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 1em;
+            background: #F7CCCB;
+            resize: vertical;
+        }
+        .save-btn {
+            margin-top: 16px;
+            background: #997F7A;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 24px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .save-btn:hover {
+            background: #524B4B;
+        }
+    </style>
+</head>
+<body>
+    <div class="memo-container">
+        <input type="text" class="memo-title" id="memoTitle" placeholder="タイトルを入力">
+        <textarea class="memo-list" id="memoList" placeholder="・箇条書きでメモを入力
+・Enterで改行できます"></textarea>
+        <button class="save-btn" onclick="saveMemo()">保存</button>
+        <button class="save-btn" onclick="location.href='memo.html'" style="margin-left:8px;">一覧へ戻る</button>
+    </div>
+    <script>
+        // 編集時、URLからタイトル取得
+        const params = new URLSearchParams(window.location.search);
+        const title = params.get('title');
+        if (title) {
+            document.getElementById('memoTitle').value = title;
+            const content = localStorage.getItem('memo_' + title);
+            if (content) document.getElementById('memoList').value = content;
+        }
+
+        function saveMemo() {
+            const titleVal = document.getElementById('memoTitle').value;
+            const list = document.getElementById('memoList').value;
+            if (!titleVal.trim()) {
+                alert('タイトルを入力してください');
+                return;
+            }
+            localStorage.setItem('memo_' + titleVal, list);
+            alert('保存しました');
+        }
+    </script>
+</body>
+</html>
