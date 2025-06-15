@@ -21,27 +21,10 @@ select { font-size: 1em; }
     align-items: center;
     justify-content: center;
     margin-bottom: 10px;
-}
-.arrow-btn {
-    background: none;
-    border: none;
-    font-size: 2em;
-    cursor: pointer;
-    padding: 0 20px;
-    user-select: none;
-}
-.calendar-title {
-    font-size: 1.2em;
-    min-width: 120px;
-    text-align: center;
-}
-
-.calendar-header {
     background-color: #997F7A;
     color: #F7CCCB;
     padding: 8px 0;
     border-radius: 8px;
-    margin-bottom: 10px;
 }
 
 .arrow-btn {
@@ -49,6 +32,10 @@ select { font-size: 1em; }
     background: #524B4B;
     border: 1px solid #997F7A;
     border-radius: 50%;
+    font-size: 2em;
+    cursor: pointer;
+    padding: 0 20px;
+    user-select: none;
     transition: background 0.2s;
 }
 
@@ -57,21 +44,27 @@ select { font-size: 1em; }
     color: #524B4B;
 }
 
+.calendar-title {
+    font-size: 1.2em;
+    min-width: 120px;
+    text-align: center;
+}
+
 table {
     background: #fff;
     border-collapse: collapse;
     margin: 0 auto 16px auto;
     box-shadow: 0 2px 8px #C0C0C0;
-    font-size: 1.5em; /* 追加: 全体の文字サイズを1.5倍に */
+    font-size: 1.5em;
 }
 
 th, td {
     border: 1px solid #C0C0C0;
-    width: 48px;   /* 32px → 48px (1.5倍) */
-    height: 48px;  /* 32px → 48px (1.5倍) */
+    width: 48px;
+    height: 48px;
     text-align: center;
     color: #524B4B;
-    font-size: 1em; /* 維持: tableのfont-sizeに依存 */
+    font-size: 1em;
 }
 
 th {
@@ -92,6 +85,8 @@ td {
     height: 100%;
     border-radius: 4px;
     transition: background 0.2s;
+    font-size: 1em;
+    padding: 8px;
 }
 
 .calendar-link:hover {
@@ -120,6 +115,7 @@ td {
     z-index: 100;
     transition: background 0.2s;
 }
+
 .plus-btn:hover {
     background: #e8cacc;
 }
@@ -145,6 +141,7 @@ td {
     z-index: 100;
     transition: background 0.2s;
 }
+
 .memo-btn:hover {
     background: #e8cacc;
 }
@@ -170,6 +167,7 @@ td {
     z-index: 100;
     transition: background 0.2s;
 }
+
 .setting-btn:hover {
     background: #787272;
 }
@@ -233,11 +231,7 @@ td {
         right: 12px;      /* 右上にしっかり寄せる */
         left: auto;
     }
-    #recordDisplay {
-        max-width: 98vw;
-        padding: 10px;
-        font-size: 1em;
-    }
+    
     .calendar-link {
         font-size: 1em;
         padding: 4px;
@@ -252,5 +246,6 @@ td {
 .hidden {
     display: none !important;
 }
+
 
 
