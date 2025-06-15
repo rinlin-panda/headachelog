@@ -184,43 +184,51 @@
     // 日付指定があればデータ取得して反映
     const params = new URLSearchParams(window.location.search);
     const date = params.get('date');
-    if (date) {
+    const hasRecord = params.get('hasRecord');
+    if (date && hasRecord === '1') {
+      await reflectRecordData(date);
+    } else if (date) {
       document.getElementById('date').value = date;
-      const doc = await db.collection('records').doc(window.userId).collection('dates').doc(date).get();
-      if (doc.exists) {
-        const data = doc.data();
-        // 痛みの時間
-        if (data.pain_times) {
-          data.pain_times.forEach(time => {
-            const checkbox = document.querySelector(`input[name="pain_time"][value="${time}"]`);
-            if (checkbox) checkbox.checked = true;
-          });
-        }
-        // 服薬
-        if (data.medicines && data.medicines.length > 0) {
-          // 1つ目以外は追加
-          for (let i = 1; i < data.medicines.length; i++) addMedication();
-          const nameInputs = document.querySelectorAll('select[name="medicine_name[]"]');
-          const time1Inputs = document.querySelectorAll('input[name="medicine_time1[]"]');
-          const time2Inputs = document.querySelectorAll('input[name="medicine_time2[]"]');
-          data.medicines.forEach((med, i) => {
-            if (nameInputs[i]) nameInputs[i].value = med.name || '';
-            if (time1Inputs[i]) time1Inputs[i].value = med.time1 || '';
-            if (time2Inputs[i]) time2Inputs[i].value = med.time2 || '';
-          });
-        }
-        // 頭痛のもと
-        if (data.causes) {
-          data.causes.forEach(cause => {
-            const btn = Array.from(document.querySelectorAll('.cause-btn')).find(b => b.dataset.value === cause);
-            if (btn) btn.classList.add('selected');
-          });
-        }
-        // メモ
-        if (data.memo) document.getElementById('memo').value = data.memo;
-      }
     }
   });
+
+  // Firestoreの記録データをフォームに反映する関数
+  async function reflectRecordData(date) {
+    document.getElementById('date').value = date;
+    const doc = await db.collection('records').doc(window.userId).collection('dates').doc(date).get();
+    if (doc.exists) {
+      const data = doc.data();
+      // 痛みの時間
+      if (data.pain_times) {
+        data.pain_times.forEach(time => {
+          const checkbox = document.querySelector(`input[name="pain_time"][value="${time}"]`);
+          if (checkbox) checkbox.checked = true;
+        });
+      }
+      // 服薬
+      if (data.medicines && data.medicines.length > 0) {
+        // 1つ目以外は追加
+        for (let i = 1; i < data.medicines.length; i++) addMedication();
+        const nameInputs = document.querySelectorAll('select[name="medicine_name[]"]');
+        const time1Inputs = document.querySelectorAll('input[name="medicine_time1[]"]');
+        const time2Inputs = document.querySelectorAll('input[name="medicine_time2[]"]');
+        data.medicines.forEach((med, i) => {
+          if (nameInputs[i]) nameInputs[i].value = med.name || '';
+          if (time1Inputs[i]) time1Inputs[i].value = med.time1 || '';
+          if (time2Inputs[i]) time2Inputs[i].value = med.time2 || '';
+        });
+      }
+      // 頭痛のもと
+      if (data.causes) {
+        data.causes.forEach(cause => {
+          const btn = Array.from(document.querySelectorAll('.cause-btn')).find(b => b.dataset.value === cause);
+          if (btn) btn.classList.add('selected');
+        });
+      }
+      // メモ
+      if (data.memo) document.getElementById('memo').value = data.memo;
+    }
+  }
 
   // 服薬欄を追加したい場合は、下記のように必要に応じて呼び出し
   // 例: addMedication();

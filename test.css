@@ -247,5 +247,28 @@ td {
     display: none !important;
 }
 
+.memo-list-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #C0C0C0;
+    padding: 0 8px;
+    min-height: 48px;
+}
+.delete-memo-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #b71c1c;
+    margin-left: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.delete-memo-btn:hover {
+    background: #F7CCCB;
+}
+
 
 

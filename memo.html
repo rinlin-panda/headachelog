@@ -40,6 +40,20 @@
         .add-btn:hover {
             background: #524B4B;
         }
+        .memo-list-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #C0C0C0;
+        }
+        .delete-memo-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            color: #b71c1c;
+        }
     </style>
 </head>
 <body>
@@ -92,9 +106,9 @@
                 const title = doc.id;
                 const encodedTitle = encodeURIComponent(title);
                 memoListDiv.innerHTML += `
-                  <div style="display:flex;align-items:center;justify-content:space-between;">
-                    <a class="memo-title-link" href="memo_edit.html?title=${encodedTitle}" style="flex:1;">${title}</a>
-                    <button class="delete-memo-btn" data-title="${title}" title="削除" style="background:none;border:none;cursor:pointer;font-size:1.2em;color:#b71c1c;">🗑️</button>
+                  <div class="memo-list-row">
+                    <a class="memo-title-link" href="memo_edit.html?title=${encodedTitle}">${title}</a>
+                    <button class="delete-memo-btn" data-title="${title}" title="削除">🗑️</button>
                   </div>
                 `;
             });

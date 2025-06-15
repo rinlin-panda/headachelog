@@ -109,8 +109,10 @@
             if((firstDay + date - 1) % 7 === 0 && date !== 1) html += '</tr><tr>';
             const ymd = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
             const hasRecord = recordDates.includes(ymd);
+            // hasRecordがtrueならクエリにhasRecord=1を追加
+            const query = hasRecord ? `?date=${encodeURIComponent(ymd)}&hasRecord=1` : `?date=${encodeURIComponent(ymd)}`;
             html += `<td>
-                <a href="#" class="calendar-link${hasRecord ? ' has-record' : ''}" data-date="${ymd}">
+                <a href="write.html${query}" class="calendar-link${hasRecord ? ' has-record' : ''}" data-date="${ymd}" data-has-record="${hasRecord}">
                     ${date}
                 </a>
             </td>`;
