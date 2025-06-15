@@ -29,7 +29,7 @@ select { font-size: 1em; }
 
 .arrow-btn {
     color: #ffffff;
-    background: none; /* 背景なしに修正 */
+    background: none; 
     border: 1px solid #997F7A;
     border-radius: 50%;
     font-size: 2em;
@@ -45,7 +45,7 @@ select { font-size: 1em; }
 }
 
 .calendar-title {
-    font-size: 1.2em;
+    font-size: 1.7em;
     min-width: 120px;
     text-align: center;
 }
@@ -86,7 +86,7 @@ td {
     border-radius: 4px;
     transition: background 0.2s;
     font-size: 1em;
-    padding: 8px;
+    padding: 0px;
 }
 
 .calendar-link:hover {
@@ -190,7 +190,7 @@ td {
 
 /* ユーザーID表示用クラス */
 .user-id-display {
-    font-size: 60%;
+    font-size: 30%;
     margin-left: 1em;
     color: #F7CCCB;
     font-family: inherit;

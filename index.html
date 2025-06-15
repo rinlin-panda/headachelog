@@ -169,7 +169,7 @@
             calendarDiv.classList.remove('hidden');
             window.userId = user.uid;
             // ユーザーID表示
-            document.getElementById('userIdDisplay').textContent = `（${user.uid}）`;
+            document.getElementById('userIdDisplay').textContent = `（ユーザーID：${user.uid}）`;
             // カレンダー初期表示
             const now = new Date();
             showCalendar(now.getFullYear(), now.getMonth() + 1);

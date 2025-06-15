@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>メモ欄</title> <!-- 更新かけるようコメ -->
+    <title>メモ欄</title>
     <link rel="stylesheet" href="test.css">
     <style>
         .memo-list-container {
@@ -63,9 +63,9 @@
         <button class="add-btn" onclick="location.href='memo_edit.html'">＋新規作成</button>
         <button class="add-btn" onclick="location.href='index.html'" style="margin-left:8px;">カレンダーに戻る</button>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
     <script>
         // Firebaseの設定（index.htmlと同じ内容でOK）
         const firebaseConfig = {
@@ -104,6 +104,7 @@
             snapshot.forEach(doc => {
                 found = true;
                 const title = doc.id;
+                console.log("取得タイトル:", title); // デバッグ用
                 const encodedTitle = encodeURIComponent(title);
                 memoListDiv.innerHTML += `
                   <div class="memo-list-row">
