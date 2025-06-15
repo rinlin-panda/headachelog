@@ -99,8 +99,8 @@
             const memoListDiv = document.getElementById('memoList');
             memoListDiv.innerHTML = '';
             let found = false;
-            // Firestore: users/{userId}/memos コレクションから取得
-            const snapshot = await db.collection('users').doc(window.userId).collection('memos').get();
+            // Firestore: users/{userId}/memos コレクションから取得（サーバーから強制取得）
+            const snapshot = await db.collection('users').doc(window.userId).collection('memos').get({ source: "server" });
             snapshot.forEach(doc => {
                 found = true;
                 const title = doc.id;
