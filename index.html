@@ -12,7 +12,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
 </head>
 <body>
-    <h1>偏頭痛記録</h1>
+    <h1>偏頭痛記録<span id="userIdDisplay" class="user-id-display"></span></h1>
 
     <div class="calendar-header" id="calendarHeader">
         <button class="arrow-btn" id="prevMonthBtn">&#8592;</button>
@@ -168,6 +168,8 @@
             calendarHeader.classList.remove('hidden');
             calendarDiv.classList.remove('hidden');
             window.userId = user.uid;
+            // ユーザーID表示
+            document.getElementById('userIdDisplay').textContent = `（${user.uid}）`;
             // カレンダー初期表示
             const now = new Date();
             showCalendar(now.getFullYear(), now.getMonth() + 1);
@@ -176,6 +178,7 @@
             document.getElementById('logoutBtn').style.display = 'none';
             calendarHeader.classList.add('hidden');
             calendarDiv.classList.add('hidden');
+            document.getElementById('userIdDisplay').textContent = '';
         }
     });
     </script>

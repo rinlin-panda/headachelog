@@ -188,6 +188,15 @@ td {
     overflow: hidden;
 }
 
+/* ユーザーID表示用クラス */
+.user-id-display {
+    font-size: 60%;
+    margin-left: 1em;
+    color: #F7CCCB;
+    font-family: inherit;
+    vertical-align: middle;
+}
+
 /* --- スマートフォン用レスポンシブ調整 --- */
 @media (max-width: 600px) {
     body {
