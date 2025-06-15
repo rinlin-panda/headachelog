@@ -117,11 +117,13 @@
 
   // 設定値（薬・頭痛のもと）をFirestoreから取得
   async function loadSettings() {
+    // ユーザーIDを取得
+    const userId = window.userId;
     // 薬リスト取得
-    const medSnap = await db.collection('settings').doc('medicines').get();
+    const medSnap = await db.collection('settings').doc(userId).collection('userSettings').doc('medicines').get();
     const medicines = medSnap.exists ? medSnap.data().list : [];
     // 頭痛のもとリスト取得
-    const causeSnap = await db.collection('settings').doc('causes').get();
+    const causeSnap = await db.collection('settings').doc(userId).collection('userSettings').doc('causes').get();
     const causes = causeSnap.exists ? causeSnap.data().list : [];
 
     // 服薬欄の生成

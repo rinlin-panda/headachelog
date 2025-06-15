@@ -75,26 +75,30 @@
         const auth = firebase.auth();
 
         // 認証状態の監視とuserIdの取得
+        const saveBtn = document.querySelector('.save-btn');
+        saveBtn.disabled = true; // 初期状態で無効化
+
         auth.onAuthStateChanged(user => {
           if (user) {
             window.userId = user.uid;
-            // Firestoreアクセスはこの中、またはuserIdがセットされた後で行う
+            saveBtn.disabled = false; // 認証後に有効化
+
+            // 編集時に、URLからタイトル取得
+            const params = new URLSearchParams(window.location.search);
+            const title = params.get('title');
+            if (title) {
+              document.getElementById('memoTitle').value = title;
+              db.collection('users').doc(window.userId).collection('memos').doc(title).get().then(doc => {
+                if (doc.exists) {
+                  document.getElementById('memoList').value = doc.data().content || '';
+                }
+              });
+            }
           } else {
-            // 未ログイン時の処理（例：リダイレクトや警告表示など）
+            alert('ログインしてください');
+            window.location.href = 'login.html';
           }
         });
-
-        // 編集時に、URLからタイトル取得
-        const params = new URLSearchParams(window.location.search);
-        const title = params.get('title');
-        if (title && window.userId) {
-            document.getElementById('memoTitle').value = title;
-            db.collection('users').doc(window.userId).collection('memos').doc(title).get().then(doc => {
-                if (doc.exists) {
-                    document.getElementById('memoList').value = doc.data().content || '';
-                }
-            });
-        }
 
         function saveMemo() {
             const titleVal = document.getElementById('memoTitle').value.trim();

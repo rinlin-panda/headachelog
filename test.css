@@ -12,16 +12,36 @@ h1 {
     margin-bottom: 1em;
 }
 
+/* カレンダー・ボタン・ヘッダーのスタイル */
+table { border-collapse: collapse; }
+th, td { border: 1px solid #999; width: 32px; height: 32px; text-align: center; }
+select { font-size: 1em; }
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.arrow-btn {
+    background: none;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+    padding: 0 20px;
+    user-select: none;
+}
+.calendar-title {
+    font-size: 1.2em;
+    min-width: 120px;
+    text-align: center;
+}
+
 .calendar-header {
     background-color: #997F7A;
     color: #F7CCCB;
     padding: 8px 0;
     border-radius: 8px;
     margin-bottom: 10px;
-}
-
-.calendar-title {
-    color: #F7CCCB;
 }
 
 .arrow-btn {
@@ -79,6 +99,7 @@ td {
     color: #fff;
 }
 
+/* 右下の＋ボタン */
 .plus-btn {
     position: fixed;
     right: 30px;
@@ -86,11 +107,11 @@ td {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: #997F7A;
-    color: #fff;
+    background: #ffffff;
+    color: #000000;
     font-size: 2.5em;
     border: none;
-    box-shadow: 0 2px 6px #C0C0C0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -99,13 +120,11 @@ td {
     z-index: 100;
     transition: background 0.2s;
 }
-
 .plus-btn:hover {
-    background: #F7CCCB;
-    color: #524B4B;
-    border: 1px solid #997F7A;
+    background: #e8cacc;
 }
 
+/* 左下のメモボタン */
 .memo-btn {
     position: fixed;
     left: 30px;
@@ -113,11 +132,11 @@ td {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: #787272;
-    color: #fff;
-    font-size: 2em;
+    background: #ffffff;
+    color: #000000;
+    font-size: 2.5em;
     border: none;
-    box-shadow: 0 2px 6px #C0C0C0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -126,21 +145,35 @@ td {
     z-index: 100;
     transition: background 0.2s;
 }
-
 .memo-btn:hover {
-    background: #997F7A;
+    background: #e8cacc;
 }
 
-#recordDisplay {
-    background: #fff;
-    border: 1px solid #C0C0C0;
-    color: #787272;
-    margin: 16px auto;
-    padding: 16px;
-    border-radius: 8px;
-    max-width: 400px;
-    box-shadow: 0 2px 8px #C0C0C0;
+/* 歯車ボタン（右上固定） */
+.setting-btn {
+    position: fixed;
+    right: 100px;
+    top: 30px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #787272;
+    color: #fff;
+    font-size: 2.5em;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    z-index: 100;
+    transition: background 0.2s;
 }
+.setting-btn:hover {
+    background: #787272;
+}
+
 
 .has-record {
     background: #997F7A !important;
@@ -152,11 +185,11 @@ td {
 /* --- スマートフォン用レスポンシブ調整 --- */
 @media (max-width: 600px) {
     body {
-        font-size: 16px; /* 標準的なスマホの本文サイズ */
+        font-size: 16px;
         padding: 8px;
     }
     h1 {
-        font-size: 1.2em; /* タイトルやや大きめ */
+        font-size: 1.2em;
         padding: 0.5em 0.3em 0.2em 0.3em;
     }
     .calendar-header {
@@ -167,12 +200,12 @@ td {
     }
     table {
         width: 100%;
-        font-size: 1.1em; /* カレンダーの数字もやや大きめ */
+        font-size: 1.1em;
         margin: 0 auto 8px auto;
         box-shadow: 0 1px 4px #C0C0C0;
     }
     th, td {
-        width: 32px;   /* 標準的なタップサイズ */
+        width: 32px;
         height: 32px;
         font-size: 1em;
         padding: 2px;
@@ -182,15 +215,23 @@ td {
         width: 44px;
         height: 44px;
         font-size: 1.3em;
-        right: 12px;
-        left: 12px;
         bottom: 12px;
     }
     .plus-btn {
         right: 12px;
+        left: auto; /* 追加: 右下固定 */
     }
     .memo-btn {
         left: 12px;
+        right: auto; /* 追加: 左下固定 */
+    }
+    .setting-btn {
+        width: 36px;      /* ひとまわり小さく */
+        height: 36px;
+        font-size: 1.3em; /* アイコンも小さく */
+        top: 12px;
+        right: 12px;      /* 右上にしっかり寄せる */
+        left: auto;
     }
     #recordDisplay {
         max-width: 98vw;
@@ -205,6 +246,11 @@ td {
         font-size: 1.3em;
         padding: 0 8px;
     }
+}
+
+/* カレンダー・記録表示を非表示にするためのクラス */
+.hidden {
+    display: none !important;
 }
 
 
