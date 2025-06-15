@@ -107,11 +107,11 @@
   auth.onAuthStateChanged(user => {
   if (user) {
     window.userId = user.uid;
-    // Firestoreアクセスや初期化処理をここで呼ぶ
-    initPage();
+    loadSettings(); // 認証後に設定を取得
+    // 他に初期化したい処理があればここに追加
   } else {
     alert('ログインしてください');
-    window.location.href = 'login.html'; // ログインページがあれば
+    window.location.href = 'login.html';
   }
 });
 

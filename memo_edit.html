@@ -57,8 +57,11 @@
         <button class="save-btn" onclick="saveMemo()">保存</button>
         <button class="save-btn" onclick="location.href='memo.html'" style="margin-left:8px;">一覧へ戻る</button>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
     <script>
-        // Firebaseの設定（index.htmlと同じ内容でOK）
+        // Firebaseの設定
         const firebaseConfig = {
           apiKey: "AIzaSyBHlw82RbUfenDnDyM5WOnrEJqHHYwqQS4",
           authDomain: "headachereporttest.firebaseapp.com",
@@ -74,14 +77,15 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // 認証状態の監視とuserIdの取得
+        // 保存ボタンを初期状態で無効化
         const saveBtn = document.querySelector('.save-btn');
-        saveBtn.disabled = true; // 初期状態で無効化
+        saveBtn.disabled = true;
 
+        // 認証状態の監視とuserIdの取得
         auth.onAuthStateChanged(user => {
           if (user) {
             window.userId = user.uid;
-            saveBtn.disabled = false; // 認証後に有効化
+            saveBtn.disabled = false;
 
             // 編集時に、URLからタイトル取得
             const params = new URLSearchParams(window.location.search);
@@ -123,6 +127,5 @@
             });
         }
     </script>
-    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
 </body>
 </html>
