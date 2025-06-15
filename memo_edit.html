@@ -58,25 +58,67 @@
         <button class="save-btn" onclick="location.href='memo.html'" style="margin-left:8px;">一覧へ戻る</button>
     </div>
     <script>
+        // Firebaseの設定（index.htmlと同じ内容でOK）
+        const firebaseConfig = {
+          apiKey: "AIzaSyBHlw82RbUfenDnDyM5WOnrEJqHHYwqQS4",
+          authDomain: "headachereporttest.firebaseapp.com",
+          projectId: "headachereporttest",
+          storageBucket: "headachereporttest.appspot.com",
+          messagingSenderId: "1011198068393",
+          appId: "1:1011198068393:web:fa25a80f678c78f1764bb8",
+          measurementId: "YOUR_MEASUREMENT_ID"
+        };
+        if (firebase.apps.length === 0) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // 認証状態の監視とuserIdの取得
+        auth.onAuthStateChanged(user => {
+          if (user) {
+            window.userId = user.uid;
+            // Firestoreアクセスはこの中、またはuserIdがセットされた後で行う
+          } else {
+            // 未ログイン時の処理（例：リダイレクトや警告表示など）
+          }
+        });
+
         // 編集時に、URLからタイトル取得
         const params = new URLSearchParams(window.location.search);
         const title = params.get('title');
-        if (title) {
+        if (title && window.userId) {
             document.getElementById('memoTitle').value = title;
-            const content = localStorage.getItem('memo_' + title);
-            if (content) document.getElementById('memoList').value = content;
+            db.collection('users').doc(window.userId).collection('memos').doc(title).get().then(doc => {
+                if (doc.exists) {
+                    document.getElementById('memoList').value = doc.data().content || '';
+                }
+            });
         }
 
         function saveMemo() {
-            const titleVal = document.getElementById('memoTitle').value;
+            const titleVal = document.getElementById('memoTitle').value.trim();
             const list = document.getElementById('memoList').value;
-            if (!titleVal.trim()) {
+            if (!titleVal) {
                 alert('タイトルを入力してください');
                 return;
             }
-            localStorage.setItem('memo_' + titleVal, list);
-            alert('保存しました'); 
+            if (!window.userId) {
+                alert('ログイン情報がありません');
+                return;
+            }
+            // Firestoreに保存
+            db.collection('users').doc(window.userId).collection('memos').doc(titleVal).set({
+                content: list,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                alert('保存しました');
+                location.href = 'memo.html';
+            }).catch(e => {
+                alert('保存に失敗しました: ' + e.message);
+            });
         }
     </script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
 </body>
 </html>

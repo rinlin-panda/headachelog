@@ -78,6 +78,7 @@
     </div>
     <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
     <script>
         // Firebaseの設定
         const firebaseConfig = {
@@ -89,12 +90,27 @@
             appId: "1:1011198068393:web:fa25a80f678c78f1764bb8",
             measurementId: "YOUR_MEASUREMENT_ID"
         };
-        firebase.initializeApp(firebaseConfig);
+        if (firebase.apps.length === 0) {
+          firebase.initializeApp(firebaseConfig);
+        }
         const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // 認証状態の監視とuserIdの取得
+        auth.onAuthStateChanged(user => {
+          if (user) {
+            window.userId = user.uid;
+            loadMedicines();
+            loadCauses();
+          } else {
+            alert('ログインしてください');
+            window.location.href = 'login.html';
+          }
+        });
 
         // 薬リストの表示・追加・削除をする
         async function loadMedicines() {
-            const snap = await db.collection('settings').doc('medicines').get();
+            const snap = await db.collection('settings').doc(window.userId).collection('userSettings').doc('medicines').get();
             const medicines = snap.exists ? snap.data().list : [];
             const list = document.getElementById('medicineList');
             list.innerHTML = '';
@@ -106,7 +122,7 @@
                 btn.className = 'remove-btn';
                 btn.onclick = async () => {
                     medicines.splice(idx, 1);
-                    await db.collection('settings').doc('medicines').set({ list: medicines });
+                    await db.collection('settings').doc(window.userId).collection('userSettings').doc('medicines').set({ list: medicines });
                     loadMedicines();
                 };
                 li.appendChild(btn);
@@ -117,17 +133,17 @@
             const input = document.getElementById('newMedicine');
             const name = input.value.trim();
             if (!name) return;
-            const snap = await db.collection('settings').doc('medicines').get();
+            const snap = await db.collection('settings').doc(window.userId).collection('userSettings').doc('medicines').get();
             const medicines = snap.exists ? snap.data().list : [];
             medicines.push(name);
-            await db.collection('settings').doc('medicines').set({ list: medicines });
+            await db.collection('settings').doc(window.userId).collection('userSettings').doc('medicines').set({ list: medicines });
             input.value = '';
             loadMedicines();
         }
 
         // 頭痛のもとリストの表示・追加・削除
         async function loadCauses() {
-            const snap = await db.collection('settings').doc('causes').get();
+            const snap = await db.collection('settings').doc(window.userId).collection('userSettings').doc('causes').get();
             const causes = snap.exists ? snap.data().list : [];
             const list = document.getElementById('causeList');
             list.innerHTML = '';
@@ -139,7 +155,7 @@
                 btn.className = 'remove-btn';
                 btn.onclick = async () => {
                     causes.splice(idx, 1);
-                    await db.collection('settings').doc('causes').set({ list: causes });
+                    await db.collection('settings').doc(window.userId).collection('userSettings').doc('causes').set({ list: causes });
                     loadCauses();
                 };
                 li.appendChild(btn);
@@ -150,10 +166,10 @@
             const input = document.getElementById('newCause');
             const name = input.value.trim();
             if (!name) return;
-            const snap = await db.collection('settings').doc('causes').get();
+            const snap = await db.collection('settings').doc(window.userId).collection('userSettings').doc('causes').get();
             const causes = snap.exists ? snap.data().list : [];
             causes.push(name);
-            await db.collection('settings').doc('causes').set({ list: causes });
+            await db.collection('settings').doc(window.userId).collection('userSettings').doc('causes').set({ list: causes });
             input.value = '';
             loadCauses();
         }

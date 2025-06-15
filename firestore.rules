@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 'records' コレクションのルール: 認証されたユーザーが自分のデータのみにアクセス
+    // ユーザーのUIDがドキュメントIDとして使用されている場合を想定
+    // 例: /records/{userId}/2025-05-18
+    match /records/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // 'settings' コレクションのルール: 認証されたユーザーが自分のデータのみにアクセス
+    // ユーザーのUIDがドキュメントIDとして使用されている場合を想定
+    // 例: /settings/{userId}/user_preferences
+    match /settings/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // デフォルトでその他のドキュメントへのアクセスを拒否する
+    // 上記のルールにマッチしないすべてのリクエストは拒否されます
+    match /{document=**} {
+       allow read, write: if false;
+    }
+  }
+}

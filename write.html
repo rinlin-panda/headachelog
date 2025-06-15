@@ -85,6 +85,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
 <script>
   // Firebaseの設定
   const firebaseConfig = {
@@ -96,8 +97,23 @@
     appId: "1:1011198068393:web:fa25a80f678c78f1764bb8",
     measurementId: "YOUR_MEASUREMENT_ID"
   };
-  firebase.initializeApp(firebaseConfig);
+  if (firebase.apps.length === 0) {
+    firebase.initializeApp(firebaseConfig);
+  }
   const db = firebase.firestore();
+  const auth = firebase.auth();
+
+  // 認証状態の監視とuserIdの取得
+  auth.onAuthStateChanged(user => {
+  if (user) {
+    window.userId = user.uid;
+    // Firestoreアクセスや初期化処理をここで呼ぶ
+    initPage();
+  } else {
+    alert('ログインしてください');
+    window.location.href = 'login.html'; // ログインページがあれば
+  }
+});
 
   // 設定値（薬・頭痛のもと）をFirestoreから取得
   async function loadSettings() {
@@ -168,7 +184,7 @@
     const date = params.get('date');
     if (date) {
       document.getElementById('date').value = date;
-      const doc = await db.collection('records').doc(date).get();
+      const doc = await db.collection('records').doc(window.userId).collection('dates').doc(date).get();
       if (doc.exists) {
         const data = doc.data();
         // 痛みの時間
@@ -228,7 +244,7 @@
       .map(btn => btn.dataset.value);
     const memo = document.getElementById('memo').value;
 
-    db.collection('records').doc(date).set({
+    db.collection('records').doc(window.userId).collection('dates').doc(date).set({
       pain_times: pain_times,
       medicines: medicines,
       causes: causes,
